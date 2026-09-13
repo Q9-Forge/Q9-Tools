@@ -1,0 +1,92 @@
+spawn sudo -n Q9_TRAP_TRACE=/tmp/pkdvr_trace2.log ./build/native/q9.exe --cb030 /Volumes/SSD1TB/projects/MWOS/OS9/68030/PORTS/Q9/CMDS/BOOTOBJS/ROMBUG/romimage.dev.running.BIN --cf local_images/OS9SYS.claudia-optionb-patchtest.hda --net vmnet
+cb030: ROM '/Volumes/SSD1TB/projects/MWOS/OS9/68030/PORTS/Q9/CMDS/BOOTOBJS/ROMBUG/romimage.dev.running.BIN' geladen (524288 Byte), 16 MByte RAM, CF -> local_images/OS9SYS.claudia-optionb-patchtest.hda — Reset.
+[OS-9 Net] Multi-Terminal Server gestartet auf Mac-Port 2000
+[OS-9 Net] vmnet Shared Mode: Gateway 192.168.200.1/24, Interface-MAC da:6f:fd:51:59:da
+680x0: unhandled PFLUSH PC=fe001f30 (ok/ignoriert - kein TLB; weitere Meldungen unterdrueckt)
+
+OS-9/68K System Bootstrap
+Now trying to boot from CompactFlash.
+A valid OS-9 bootfile was found.
+CompactFlash driver build 42
+680x0: unhandled PTEST (weitere Meldungen unterdrueckt)
+* Excecute startup File ...
+setenv TERM q9term
+iniz dd c0 c0_fmt r0
+chx /dd/CMDS
+chd /dd
+* 5.6: Echtzeituhr - RTC72421-Treiber (Emulator, /rtc72421 = rtclock rev 1,
+* gewinnt gegen das DS1302-rtclock aus dem Bootfile) laden und Systemzeit
+* aus der Host-Uhr setzen
+load /dd/rtc72421
+setime -s
+July 15, 2026 Wednesday 5:07:19 pm
+* 5.14: falls vorhanden, idbgen-generierte inetdb/inetdb2 laden - MUSS vor
+* "load /dd/netmods" passieren (s. loadidb) und als Sub-Script-Aufruf per
+* Namen erfolgen, sonst reisst ein Fehlschlag (Datei fehlt) den kompletten
+* Bootvorgang ab statt nur diesen einen Ladeversuch.
+/dd/SYS/loadidb
+* Netzwerk (SPF): Module laden + Stack starten (s. SYS/startspf)
+load /dd/netmods
+/dd/SYS/startspf
++18
+*End startup
+*
+* 5.10: Netzwerk-Terminals /x1../x8 (Treiber nettty, s. MWOS-Q9-Port SCF/)
+* laden + initialisieren + tsmon lauschen lassen - Verbindung: telnet Port 2000
+load /dd/xterms
+iniz x1 x2 x3 x4 x5 x6 x7 x8
+tsmon /x1 /x2 /x3 /x4 /x5 /x6 /x7 /x8 &
++21
+8 devices onlinespawn telnet 192.168.200.2
+Trying 192.168.200.2...
+Connected to 192.168.200.2.
+Escape character is '^]'.
+
+OS-9/68K V3.2   CB030 - 68030   26/07/15 17:07:27
+
+User name?: super
+Password: 
+Process #24 logged on    26/07/15 17:07:27
+Welcome!
+
+*****************************************************************************
+*                                                                           *
+*             *****   *****   *****       *   *     *****  *   *            *
+*            *     * *     * *     *     *   *     *     * *  *             *
+*            *     * *       *     *    *   *      *     * * *              *
+*            *     *  *****   *****    *    *****   *****  **               *
+*            *     *       *      *   *    *     * *     * * *              *
+*            *     * *     *     *   *     *     * *     * *  *             *
+*             *****   *****     *   *       *****   *****  *   *            *
+*                                                                           *
+*****************************************************************************
+
+$ 
+<<<LOGIN OK>>>
+dir -aer /dd
+
+                           Directory of /dd 17:07:27
+ Owner    Last modified  Attributes Sector Bytecount Name
+-------   -------------  ---------- ------ --------- ----
+  0.0     26/07/07 2325   ----r-wr    6CC0        19 .login
+  0.0     00/00/00 0000   d-ewrewr      60       128 C
+  0.0     26/07/15 0944   d-ewrewr      80      6208 CMDS
+  0.0     26/07/06 0058   d-ewrewr      A0       128 CMDS_NEW
+  0.0     26/07/06 0058   d-ewrewr      C0      2400 DEFS
+  0.0     26/07/14 1015   d-ewrewr   84FE0       192 ETC
+  0.0     26/07/06 0058   d-ewrewr      E0        96 GDP
+  0.0     26/07/14 1658   d-ewrewr    6EE0       192 HOME
+  0.0     26/07/06 0058   d-ewrewr     100      2080 IO
+  0.0     26/07/06 0058   d-ewrewr     120       128 KERMIT
+  0.0     26/07/06 0058   d-ewrewr     140       672 LIB
+  0.0     00/00/00 0000   d-ewrewr     160       384 MWOS
+  0.0     26/07/07 2351   ----r-wr    6CE0    314428 OS9Boot
+  1.0     00/00/00 0000   d-ewrewr    7180        96 PROJECTS
+  0.0     26/07/14 1711   d-ewrewr     180       224 README
+  0.0     26/07/14 1520   d-ewrewr     1A0       608 SYS
+  0.0     26/07/13 0044   --e-rewr   84E60    198110 netmods
+  0.0     94/05/03 1735   ----r-wr    6C80       596 reinstall.old
+  0.0     94/05/03 1736   ----r-wr    6CA0       660 reinstall.ultra
+<<<DIR HAENGT NACH 600s -- Dauerhaenger bestaetigt>>>
+
+<<<SCRIPT FERTIG>>>
