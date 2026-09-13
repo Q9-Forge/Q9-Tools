@@ -1,0 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+static void usage(void){fputs("Syntax: setime [<opt>] [yy mm dd hh mm ss]\015Function: set system date and time\015     -d    don't display time\015     -s    set battery-backed clock\015",stdout);}
+int main(int argc,char **argv){time_t now;struct tm *t;int display=1;int v[6];int n=0;while(--argc>0){++argv;if(!strcmp(*argv,"-?")){usage();return 0;}else if(!strcmp(*argv,"-d"))display=0;else if(!strcmp(*argv,"-s"))continue;else if(**argv=='-'){fprintf(stderr,"unknown option '%c'\015",(*argv)[1]);return 1;}else if(n<6)v[n++]=atoi(*argv);else{fputs("too many parameters\015",stderr);return 1;}}if(n==6){t=(struct tm *)0;now=time((time_t *)0);t=localtime(&now);if(!t)return 1;t->tm_year=v[0]+(v[0]<70?100:0);t->tm_mon=v[1]-1;t->tm_mday=v[2];t->tm_hour=v[3];t->tm_min=v[4];t->tm_sec=v[5];now=mktime(t);if(_os_setime(now)!=0){fputs("can't set system time\015",stderr);return 1;}}else if(n!=0){fputs("six time fields required\015",stderr);return 1;}if(display){now=time((time_t *)0);t=localtime(&now);if(t)printf("%02d/%02d/%02d %02d:%02d:%02d\015",t->tm_year%100,t->tm_mon+1,t->tm_mday,t->tm_hour,t->tm_min,t->tm_sec);}return 0;}
