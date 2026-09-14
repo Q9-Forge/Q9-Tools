@@ -5,3 +5,6 @@ build/
 *.r
 *.mod
 *.tmp
+
+# Claude Code: local tool settings, never versioned.
+.claude/
