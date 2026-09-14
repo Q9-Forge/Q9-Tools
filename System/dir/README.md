@@ -41,8 +41,8 @@ The current verified module is in `build/Qdir`.
 The reproducible build is run from `c/` with:
 
 ```text
-source /Volumes/SSD1TB/projects/MWOS/tools/macos/env/os9-toolchain.sh
-MWOS="$MWOS_WIN" os9make MWOS="$MWOS_WIN"
+source /Volumes/SSD1TB/projects/REF/tools/macos/env/os9-toolchain.sh
+REF="$MWOS_WIN" os9make REF="$MWOS_WIN"
 ```
 
 The linker output is first created as `c/dir`, then the Makefile copies it to
